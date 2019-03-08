@@ -2,6 +2,7 @@
 开发的一些总结代码
 ===========================
 * [Glide获取视频的某一帧](#Glide获取视频的某一帧)
+* [双击back返回键退出app](#双击back返回键退出app)
 
 
 Glide获取视频的某一帧
@@ -34,3 +35,30 @@ Glide获取视频的某一帧
       Glide.with(context).load(uri).apply(requestOptions).into(imageView);
   }
 ```
+
+双击back返回键退出app
+---------------------
+```java
+public class MainActivity extends Activity {
+
+	private Toast toast;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		toast = Toast.makeText(getApplicationContext(), "确定退出？", 0);
+	}
+	public void onBackPressed() {
+		quitToast();
+	}
+	private void quitToast() {
+		if(null == toast.getView().getParent()) {
+			toast.show();
+		}else{
+			System.exit(0);
+		}
+	}
+}
+```
+
