@@ -3,6 +3,7 @@
 ===========================
 * [Glide获取视频的某一帧](#Glide获取视频的某一帧)
 * [双击back返回键退出app](#双击back返回键退出app)
+* [通过反射的方式拿到Application上下文](#通过反射的方式拿到Application上下文)
 
 
 Glide获取视频的某一帧
@@ -59,6 +60,34 @@ public class MainActivity extends Activity {
 			System.exit(0);
 		}
 	}
+}
+```
+
+
+
+通过反射的方式拿到Application上下文
+-------------------------------------------
+```java
+private Application getApplicationByReflect() {
+	try {
+	    @SuppressLint("PrivateApi")
+	    Class<?> activityThread = Class.forName("android.app.ActivityThread");
+	    Object thread = activityThread.getMethod("currentActivityThread").invoke(null);
+	    Object app = activityThread.getMethod("getApplication").invoke(thread);
+	    if (app == null) {
+		throw new NullPointerException("u should init first");
+	    }
+	    return (Application) app;
+	} catch (NoSuchMethodException e) {
+	    e.printStackTrace();
+	} catch (IllegalAccessException e) {
+	    e.printStackTrace();
+	} catch (InvocationTargetException e) {
+	    e.printStackTrace();
+	} catch (ClassNotFoundException e) {
+	    e.printStackTrace();
+	}
+	throw new NullPointerException("u should init first");
 }
 ```
 
